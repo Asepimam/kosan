@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  mysql-kostan:
+    image: mysql:8.0
+    container_name: mysql-kosan
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: your_root_password
+      MYSQL_DATABASE: kosan_db
+      MYSQL_USER: kosan_user
+      MYSQL_PASSWORD: kosan_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
