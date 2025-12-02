@@ -1,0 +1,195 @@
+openapi: '3.0.3'
+info:
+  title: kosan_backend
+  version: '1.0'
+servers:
+  - url: http://localhost:8000/api
+tags:
+  - name: Authentication
+    description: Endpoints for user authentication and JWT token management
+  - name: Users
+    description: Endpoints for user management
+paths:
+  /auth/login/:
+    post:
+      summary: Obtain JWT token pair
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        '200':
+          description: Successful token retrieval
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access:
+                    type: string
+                  refresh:
+                    type: string
+        '401':
+          description: Unauthorized - Invalid credentials
+      tags:
+        - Authentication
+  /auth/refresh/:
+    post:
+      summary: Refresh JWT access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh:
+                  type: string
+              required:
+                - refresh
+      responses:
+        '200':
+          description: Successful token refresh
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access:
+                    type: string
+        '401':
+          description: Unauthorized - Invalid refresh token
+      tags:
+        - Authentication
+
+  /users/:
+    get:
+      summary: Retrieve a list of users
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        username:
+                          type: string
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+                        email:
+                          type: string
+                        phone_number:
+                          type: string
+        '401':
+          description: Unauthorized - Authentication required
+      tags:
+        - Users
+  /users/create/:
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                phone_number:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      username:
+                        type: string
+                      first_name:
+                        type: string 
+                      last_name:
+                        type: string
+                      email:
+                        type: string
+                      phone_number:
+                        type: string
+        '400':
+          description: Bad Request - Invalid input data
+      tags:
+        - Users
+  /user/change-password/:
+    post:
+      summary: Change user password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                old_password:
+                  type: string
+                new_password:
+                  type: string
+              required:
+                - old_password
+                - new_password
+      responses:
+        '200':
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request - Invalid input data
+        '401':
+          description: Unauthorized - Authentication required
+      tags:
+        - Users
