@@ -1,0 +1,30 @@
+# Backend-specific ignores (mostly same as root)
+env/
+venv/
+.venv/
+pyvenv.cfg
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+/media/
+/staticfiles/
+
+# Caches and reports
+.pytest_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+
+# Editor configs
+.vscode/
+.idea/
+*.iml
+
+# macOS
+.DS_Store
